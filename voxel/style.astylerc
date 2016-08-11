@@ -1,0 +1,33 @@
+--style=stroustrup   # brackets on new line only for func
+
+--indent=spaces=4        # indent using 4 spaces per indent
+
+--indent-switches        # indent switch blocks
+
+--indent-cases
+# --indent-blocks
+--indent-col1-comments
+
+--break-blocks=all       # Insert empty lines around header blocks
+--add-brackets           # Add  brackets  to  unbracketed  one  line conditional statements
+
+--indent-namespaces      # add extra indentation to namespace blocks
+--indent-labels          # add extra indentation to labels
+--indent-preprocessor    # indent multi-line preprocessor definitions
+--min-conditional-indent=0  # multi-line will be aligned with the paren
+--max-instatement-indent=80 # maximum 80 spaces to indent a continuation line
+
+--keep-one-line-statements  # don't break lines
+# --keep-one-line-blocks      # don't break blocks
+--convert-tabs              # convert tabs to the appropriate number of spaces
+--align-pointer=type        # attach (* or &) to the operator's declared type
+
+### optional options
+#--pad-oper              # insert space padding around operators
+#--pad-header            # insert space padding after paren headers
+#--unpad-paren           # remove unnecessary space padding around parenthesis
+
+#--lineend=linux         # force use linux line end style
+#--suffix=none           # do not retain a backup of the original file
+#--recursive             # process all subdirectories recursively
+
