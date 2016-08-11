@@ -14,4 +14,8 @@ SOURCES += src/main.cpp \
     src/MainGame.cpp
 
 HEADERS += \
-    src/MainGame.h
+    src/MainGame.h \
+    src/GameState.h
+
+DISTFILES += \
+    style.astylerc

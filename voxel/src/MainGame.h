@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
 
+#include "GameState.h"
+
 class MainGame
 {
 public:
@@ -11,12 +13,17 @@ public:
     ~MainGame();
 
     void start();
-    void initialize();
 
 private:
     int _screenWidth;
     int _screenHeight;
     SDL_Window* _SDL;
+    GameState _state;
+
+
+    void initialize();
+    void gameLoop();
+
 };
 
 #endif // MAINGAME_H
