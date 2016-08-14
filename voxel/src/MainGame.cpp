@@ -33,6 +33,21 @@ void MainGame::initialize()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
 
+    // TODO: RESEARCH: What do these do?!
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    // SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    // Will create 2 screens to draw and clean on
+    // scrA and scrB
+    // initially we draw on scrA
+    // next frame we switch to scrB
+    // and draw on scrB while scrA is cleaned
+    // then the two are switched
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
     _SDL = SDL_CreateWindow("gamewindow", SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight,
                             SDL_WINDOW_OPENGL);
@@ -63,23 +78,9 @@ void MainGame::setupGL()
         throw;
     }
 
-    ///
-    /// \brief SDL_GL_SetAttribute
-    ///
-    /// Will create 2 screens to draw and clean on
-    /// scrA and scrB
-    /// initially we draw on scrA
-    /// next frame we switch to scrB
-    /// and draw on scrB while scrA is cleaned
-    /// then the two are switched back
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-    ///
-    /// \brief glClearColor
-    /// Sets the initial color that will be drawn
-    /// every time the window is cleared
+    // Sets the initial color that will be drawn
+    // every time the window is cleared
     glClearColor(0.2f, 0.6f, 0.65f, 0.5f);
-
 
     auto glslVer = glGetString(GL_SHADING_LANGUAGE_VERSION);
     auto glVer = glGetString(GL_VERSION);
@@ -104,8 +105,8 @@ void MainGame::handleInput()
     while (SDL_PollEvent(&currEvent)) {
         switch (currEvent.type) {
             case SDL_MOUSEMOTION:
-                printf("Moved mouse to X:%d Y:%d\n\n", currEvent.motion.x,
-                       currEvent.motion.y);
+                // printf("Moved mouse to X:%d Y:%d\n\n", currEvent.motion.x,
+                // currEvent.motion.y);
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -117,7 +118,7 @@ void MainGame::handleInput()
                 break;
 
             default:
-                printf("Unhandled event ...\n");
+                // printf("Unhandled event ...\n");
                 break;
         }
     }
