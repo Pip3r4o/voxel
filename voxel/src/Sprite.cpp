@@ -77,6 +77,7 @@ void Sprite::init(float x, float y, float width, float height)
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vSSC, NULL);
+    glCompileShader(vertexShader);
 
     GLint status;
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
