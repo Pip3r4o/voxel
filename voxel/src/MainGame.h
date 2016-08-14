@@ -2,9 +2,9 @@
 #define MAINGAME_H
 
 #include <SDL2/SDL.h>
-#include <GL/gl.h>
 
 #include "GameState.h"
+#include "Sprite.h"
 
 class MainGame
 {
@@ -12,18 +12,22 @@ public:
     MainGame();
     ~MainGame();
 
-    void start();
+    void run();
 
 private:
+    void initialize();
+    void setupGL();
+
+    void gameLoop();
+    void handleInput();
+    void draw();
+
     int _screenWidth;
     int _screenHeight;
     SDL_Window* _SDL;
     GameState _state;
 
-
-    void initialize();
-    void gameLoop();
-
+    Sprite _sprite;
 };
 
 #endif // MAINGAME_H
