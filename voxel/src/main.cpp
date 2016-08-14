@@ -4,9 +4,7 @@
 int main(int argc, char* argv[])
 {
     MainGame game;
-    game.start();
+    game.run();
 
-    int p;
-    std::cin >> p;
-    return 1;
+    return 0;
 }
