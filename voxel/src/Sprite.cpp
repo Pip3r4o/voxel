@@ -10,6 +10,17 @@ void Sprite::init(float x, float y, float width, float height)
     _width = width;
     _height = height;
 
+
+    /*
+     * Vertex Array Objects (VAO)s store all of the links between the attributes and your VBOs with raw vertex data
+     * Every time we call glVertexAttribPointer, that information will be stored in that VAO.
+     * This makes switching between different vertex data and vertex formats as easy as binding a different VAO
+     */
+
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
     // a VBO has not been generated yet for this sprite
     if(_vboID == 0 ) {
         // allocate a VBO memory and assign it to the ID
@@ -39,7 +50,7 @@ void Sprite::init(float x, float y, float width, float height)
     //    vertexData[10] = x + width;
     //    vertexData[11] = y + height;
 
-    float vertices[3 * 2] = {
+    float vertices[] = {
         0.0f,  0.5f, // Vertex 1 (X, Y)
         0.5f, -0.5f, // Vertex 2 (X, Y)
         -0.5f, -0.5f  // Vertex 3 (X, Y)
@@ -55,7 +66,7 @@ void Sprite::init(float x, float y, float width, float height)
              * GL_DYNAMIC_DRAW -the data is likely to change a lot
              * GL_STREAM_DRAW - the data will change every time it is drawn */);
 
-    std::string vertexShaderSource = R"(#version 130
+    std::string vertexShaderSource = R"(#version 330 core
             in vec2 position;
 
             void main()
@@ -64,7 +75,7 @@ void Sprite::init(float x, float y, float width, float height)
             })";
     const char* vSSC = vertexShaderSource.c_str();
 
-    std::string fragmentShaderSource = R"(#version 130
+    std::string fragmentShaderSource = R"(#version 330 core
 
                                  out vec4 outColor;
 
@@ -84,6 +95,7 @@ void Sprite::init(float x, float y, float width, float height)
 
     if(status == GL_TRUE) {
         std::cout << "VERTEX SHADER COMPILED SUCCESSFULLY!" << std::endl;
+
     } else {
         std::cout << "VERTEX SHADER DIDNT COMPILE!" << std::endl;
         char buffer[512];
@@ -102,6 +114,7 @@ void Sprite::init(float x, float y, float width, float height)
 
     if(status == GL_TRUE) {
         std::cout << "FRAGMENT SHADER COMPILED SUCCESSFULLY!" << std::endl;
+
     } else {
         std::cout << "FRAGMENT SHADER DIDNT COMPILE!" << std::endl;
         char buffer[512];
@@ -111,6 +124,58 @@ void Sprite::init(float x, float y, float width, float height)
 
         std::cout << "Fragment shader compilation log: " << buffer << std::endl;
     }
+
+    // The two shaders are programmed to work together,
+    // so we make one 'program' out of the two
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    // TODO: RESEARCH: What does this do?!
+    //glBindFragDataLocation(shaderProgram, 0, "outColor");
+
+    // Link the two compiled shaders
+    glLinkProgram(shaderProgram);
+
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
+
+    if(status == GL_TRUE) {
+        std::cout << "Successfully linked the two shaders into a program!" << std::endl;
+
+    } else {
+        std::cout << "FAILED LINKING THE TWO SHADERS INTO A PROGRAM!" << std::endl;
+
+        char buffer[512];
+        glGetProgramInfoLog(shaderProgram, 512, NULL, buffer);
+
+        std::cout << "Program Info log: " << buffer << std::endl;
+    }
+
+    // Dispose of the shaders, they've been linked already
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // Every shader and rendering call will now use this program object (and the shaders)
+    glUseProgram(shaderProgram);
+
+    // Retrieve reference to the 'position' attribute from the vertex shader
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+
+    // Define how data is retrieved from the array
+    glVertexAttribPointer(posAttrib,
+                          2 /* number of components (x, y) */,
+                          GL_FLOAT /* type of components */,
+                          GL_FALSE /* whether to normalize values between -1.0 and 1.0 */,
+                          0 /* stride - how many bytes are between each position attribute in the array */,
+                          0 /* offset - how many bytes from the start of the array the attribute occurs */);
+
+    /* ^^^
+     * The function will not only store the stride and offset, but also the VBO
+     * that is currently bound to GL_ARRAY_BUFFER. So we don't need to explicitly
+     * bind the correct VBO when calling the actual drawing functions.
+     */
+
+    glEnableVertexAttribArray(posAttrib);
+
 }
 
 Sprite::Sprite()
@@ -127,18 +192,11 @@ Sprite::~Sprite()
 
 void Sprite::draw()
 {
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    // draw only the first and only array in the buffer
-    // without data about light and other
-    glEnableVertexAttribArray(0);
+    glDrawArrays(GL_TRIANGLES, 0, 3 /* 3 for 3 vertices in a triangle */);
 
-    // TODO: RESEARCH: What does this do?!
-    glVertexAttribPointer(0, 2 /* 2 coordinates - x and y*/, GL_FLOAT, GL_FALSE, 0, 0);
+//    glDisableVertexAttribArray(0);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);//6 /* 6 for 6 vertices in a square */);
-
-    glDisableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
