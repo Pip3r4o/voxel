@@ -4,6 +4,7 @@
 #include "GameState.h"
 #include <exception>
 #include <iostream>
+#include "GLSLProgram.h"
 
 
 MainGame::MainGame()
@@ -88,6 +89,14 @@ void MainGame::setupGL()
     // outputs version supported by the graphics driver
     std::cout << "OpenGL Version (supported by the Graphics Driver): " << glVer << std::endl;
     std::cout << "GL Shading Language Version: " << glslVer << std::endl;
+
+    GLSLProgram program;
+
+    std::string dirPrefix = "../voxel/";
+
+    program.compileShaders(dirPrefix + "shaders/shapes.vert", dirPrefix + "shaders/shapes.frag");
+    program.linkShaders();
+    program.use();
 }
 
 void MainGame::gameLoop()

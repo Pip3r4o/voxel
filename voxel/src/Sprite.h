@@ -18,4 +18,5 @@ private:
     float _y;
 
     GLuint _vboID;
+    GLuint _vaoID;
 };
