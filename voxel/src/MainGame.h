@@ -1,13 +1,11 @@
-#ifndef MAINGAME_H
-#define MAINGAME_H
+#pragma once
 
 #include <SDL2/SDL.h>
 
 #include "GameState.h"
 #include "Sprite.h"
 
-class MainGame
-{
+class MainGame {
 public:
     MainGame();
     ~MainGame();
@@ -29,5 +27,3 @@ private:
 
     Sprite _sprite;
 };
-
-#endif // MAINGAME_H
