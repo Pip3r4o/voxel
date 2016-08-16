@@ -10,15 +10,41 @@ GLSLProgram::GLSLProgram()
 
 GLSLProgram::~GLSLProgram()
 {
-
+    if(_programID != 0) {
+        glDeleteProgram(_programID);
+    }
 }
 
-void GLSLProgram::use() {
+void GLSLProgram::use()
+{
     glUseProgram(_programID);
+
+    // Retrieve reference to the 'position' attribute from the vertex shader
+    GLint posAttrib = 1; // set at location 1 in the .vert file //glGetAttribLocation(shaderProgram, "position");
+
+    // Define how data is retrieved from the array
+    glVertexAttribPointer(posAttrib,
+                          2 /* number of components (x, y) */,
+                          GL_FLOAT /* type of components */,
+                          GL_FALSE /* whether to normalize values between -1.0 and 1.0 */,
+                          0 /* stride - how many bytes are between each position attribute in the array */,
+                          0 /* offset - how many bytes from the start of the array the attribute occurs */);
+
+    /* ^^^
+     * The function will not only store the stride and offset, but also the VBO
+     * that is currently bound to GL_ARRAY_BUFFER. So we don't need to explicitly
+     * bind the correct VBO when calling the actual drawing functions.
+     */
+
+    glEnableVertexAttribArray(posAttrib);
 }
 
-void GLSLProgram::unuse() {
+void GLSLProgram::unuse()
+{
     glUseProgram(0);
+
+    GLint posAttrib = 1;
+    glDisableVertexAttribArray(posAttrib);
 }
 
 void GLSLProgram::linkShaders()

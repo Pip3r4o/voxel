@@ -6,7 +6,6 @@
 #include <iostream>
 #include "GLSLProgram.h"
 
-
 MainGame::MainGame()
 {
     _SDL = nullptr;
@@ -23,7 +22,9 @@ void MainGame::run()
 
     _state = GameState::PLAYING;
 
-    _sprite.init(0.0f, 0.0f, 1.0f, 1.0f);
+//    _sprite.initTriangle();
+
+    _sprite.initSquare();
 
     gameLoop();
 
@@ -59,6 +60,7 @@ void MainGame::initialize()
     }
 
     setupGL();
+    setWireframeMode();
 }
 
 void MainGame::setupGL()
@@ -90,13 +92,10 @@ void MainGame::setupGL()
     std::cout << "OpenGL Version (supported by the Graphics Driver): " << glVer << std::endl;
     std::cout << "GL Shading Language Version: " << glslVer << std::endl;
 
-    GLSLProgram program;
-
     std::string dirPrefix = "../voxel/";
 
-    program.compileShaders(dirPrefix + "shaders/shapes.vert", dirPrefix + "shaders/shapes.frag");
-    program.linkShaders();
-    program.use();
+    _program.compileShaders(dirPrefix + "shaders/shapes.vert", dirPrefix + "shaders/shapes.frag");
+    _program.linkShaders();
 }
 
 void MainGame::gameLoop()
@@ -139,7 +138,10 @@ void MainGame::draw()
     glClearDepth(1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+    _program.use();
     _sprite.draw();
+    _program.unuse();
 
     /// Will swap the 2 screens that we draw on and clear
     /// scrA and scrB
@@ -148,4 +150,12 @@ void MainGame::draw()
     /// and draw on scrB while scrA is cleaned
     /// then the two are switched back
     SDL_GL_SwapWindow(_SDL);
+}
+
+void MainGame::setWireframeMode() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+void MainGame::resetWireframeMode() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

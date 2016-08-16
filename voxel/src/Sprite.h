@@ -6,7 +6,9 @@ class Sprite {
 public:
     void draw();
 
-    void init(float x, float y, float width, float height);
+    void initTriangle();
+
+    void initSquare();
 
     Sprite();
     ~Sprite();
@@ -17,6 +19,7 @@ private:
     float _x;
     float _y;
 
+    GLuint _eboID;
     GLuint _vboID;
     GLuint _vaoID;
 };
