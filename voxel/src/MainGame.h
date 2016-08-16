@@ -4,6 +4,7 @@
 
 #include "GameState.h"
 #include "Sprite.h"
+#include "GLSLProgram.h"
 
 class MainGame {
 public:
@@ -20,10 +21,14 @@ private:
     void handleInput();
     void draw();
 
+    void setWireframeMode();
+    void resetWireframeMode();
+
     int _screenWidth;
     int _screenHeight;
     SDL_Window* _SDL;
     GameState _state;
 
+    GLSLProgram _program;
     Sprite _sprite;
 };
