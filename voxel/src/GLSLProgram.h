@@ -17,6 +17,8 @@ public:
         void use();
 
         void unuse();
+
+        GLuint getProgramId();
 private:
         GLuint _programID;
 
