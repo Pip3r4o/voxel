@@ -1,6 +1,8 @@
 #include "GLSLProgram.h"
 #include <fstream>
 #include <iostream>
+#include <math.h>
+#include "SDL2/SDL.h"
 
 GLSLProgram::GLSLProgram()
     : _programID(0), _vertexShaderID(0), _fragmentShaderID(0)
@@ -37,6 +39,14 @@ void GLSLProgram::use()
      */
 
     glEnableVertexAttribArray(posAttrib);
+
+    GLint timeValue = SDL_GetTicks() / 100;
+    GLfloat greenValue = (sin(timeValue) / 2) + 0.05;
+    GLfloat blueValue = (sin(timeValue) / 2) + 0.3;
+    GLint vertexColorLocation = glGetUniformLocation(getProgramId(), "rainbowColor");
+
+    glUniform4f(vertexColorLocation, 0.30f, greenValue, blueValue, 1.0f);
+
 }
 
 void GLSLProgram::unuse()
@@ -129,6 +139,10 @@ void GLSLProgram::compileShader(const std::string& filePath, GLuint shaderId)
 
         std::cout << "Shader compilation log: " << buffer << std::endl;
     }
+}
 
 
+GLuint GLSLProgram::getProgramId()
+{
+    return _programID;
 }

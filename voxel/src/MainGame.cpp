@@ -22,9 +22,9 @@ void MainGame::run()
 
     _state = GameState::PLAYING;
 
-//    _sprite.initTriangle();
+    _sprite.initTriangle();
 
-    _sprite.initSquare();
+//    _sprite.initSquare();
 
     gameLoop();
 
@@ -60,7 +60,7 @@ void MainGame::initialize()
     }
 
     setupGL();
-    setWireframeMode();
+//    setWireframeMode();
 }
 
 void MainGame::setupGL()

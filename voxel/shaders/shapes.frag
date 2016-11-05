@@ -2,7 +2,9 @@
 
 out vec4 outColor;
 
+uniform vec4 rainbowColor;
+
 void main()
 {
-    outColor = vec4(1.0, 1.0, 1.0, 1.0);
+    outColor = rainbowColor; //vec4(1.0, 1.0, 1.0, 1.0);
 }
